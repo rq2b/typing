@@ -5,19 +5,29 @@ const PASSAGES = [
 class TypingTest {
   #target;
   #startTime;
-  #finished;
-  #correct;
   #running;
+  #finished;
   #timer;
+  #correct;
 
   constructor() {
+    this.test = document.getElementById("test-screen");
     this.passage = document.getElementById("passage");
     this.input = document.getElementById("input");
-    this.restart = document.getElementById("restart");
     this.wpm = document.getElementById("wpm");
     this.accuracy = document.getElementById("accuracy");
+    this.restart = document.getElementById("restart");
 
     this.input.addEventListener("input", () => this.onInput());
+    this.input.addEventListener("keydown", event => {
+      if (event.key === "Enter") event.preventDefault();
+    });
+    this.input.addEventListener("paste", event => event.preventDefault());
+
+    this.test.addEventListener("click", event => {
+      if (event.target !== this.restart) this.input.focus();
+    });
+
     this.restart.addEventListener("click", () => this.loadPassage());
 
     this.loadPassage();
@@ -26,11 +36,11 @@ class TypingTest {
   loadPassage() {
     clearInterval(this.#timer);
 
-    this.#target = PASSAGES[0];
+    this.#target = PASSAGES[Math.floor(Math.random() * PASSAGES.length)];
     this.#startTime = 0;
+    this.#running = false;
     this.#finished = false;
     this.#correct = 0;
-    this.#running = false;
 
     this.passage.innerHTML = "";
     this.input.value = "";
@@ -46,6 +56,7 @@ class TypingTest {
 
     this.passage.firstElementChild.classList.add("current");
     this.updateStats();
+    this.input.focus();
   }
 
   onInput() {
@@ -53,14 +64,19 @@ class TypingTest {
 
     let typed = this.input.value;
 
+    if (typed.length > this.#target.length) {
+      typed = typed.slice(0, this.#target.length);
+      this.input.value = typed;
+    }
+
     if (!this.#running && typed.length > 0) {
       this.#running = true;
       this.#startTime = performance.now();
       this.#timer = setInterval(() => this.updateStats(), 100);
     }
 
-    this.#correct = 0;
     const spans = this.passage.children;
+    this.#correct = 0;
 
     for (let i = 0; i < spans.length; i++) {
       spans[i].classList.remove("correct", "wrong", "current");
@@ -104,4 +120,3 @@ class TypingTest {
 }
 
 const typingTest = new TypingTest();
-
