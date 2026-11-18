@@ -3,9 +3,13 @@ const PASSAGES = [
 ];
 
 class TypingTest {
+  #finished;
+
   constructor() {
     this.passage = document.getElementById("passage");
+    this.input = document.getElementById("input");
     this.loadPassage();
+    this.input.addEventListener("input", () => this.onInput());
   }
 
   loadPassage() {
@@ -16,6 +20,12 @@ class TypingTest {
       this.passage.appendChild(span);
     }
     this.passage.firstChild.classList.add("current");
+  }
+
+  onInput() {
+    if (this.#finished) return;
+    let typed = this.input.value;
+    console.log(this.input.value);
   }
 }
 
