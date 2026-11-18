@@ -4,8 +4,12 @@ const PASSAGES = [
 
 class TypingTest {
   #finished;
+  #target;
+  #correct;
 
   constructor() {
+    this.#finished = false;
+    this.#correct = 0;
     this.passage = document.getElementById("passage");
     this.input = document.getElementById("input");
     this.loadPassage();
@@ -13,7 +17,8 @@ class TypingTest {
   }
 
   loadPassage() {
-    for (let char of PASSAGES[0]) {
+    this.#target = PASSAGES[0];
+    for (let char of this.#target) {
       const span = document.createElement("span");
       span.className = "char";
       span.textContent = char;
