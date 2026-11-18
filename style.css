@@ -1,0 +1,25 @@
+@font-face {
+    font-family: "JetBrains Mono";
+    src: local("JetBrains Mono"), local("JetBrainsMono-Regular");
+    font-weight: 400;
+}
+
+:root {
+    color-scheme: dark;
+    --bg: #222222;
+    --text: #bdbdbd;
+    --muted: #686868;
+    --faint: #525252;
+    --bright: #ffffff;
+    --border: #525252;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    min-height: 100%;
+    margin: 0;
+}
+
