@@ -1,9 +1,3 @@
-@font-face {
-    font-family: "JetBrains Mono";
-    src: local("JetBrains Mono"), local("JetBrainsMono-Regular");
-    font-weight: 400;
-}
-
 :root {
     color-scheme: dark;
     --bg: #222222;
@@ -22,4 +16,5 @@ html, body {
     min-height: 100%;
     margin: 0;
 }
+
 
