@@ -18,6 +18,8 @@ class TypingTest {
 
   loadPassage() {
     this.#target = PASSAGES[0];
+    this.input.maxLength = this.#target.length;
+
     for (let char of this.#target) {
       const span = document.createElement("span");
       span.className = "char";
@@ -30,7 +32,12 @@ class TypingTest {
   onInput() {
     if (this.#finished) return;
     let typed = this.input.value;
-    console.log(this.input.value);
+    if (typed.length === this.#target.length) this.finish();
+  }
+
+  finish() {
+    this.#finished = true;
+    this.input.disabled = true;
   }
 }
 
