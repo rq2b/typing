@@ -6,6 +6,7 @@ class TypingTest {
   #finished;
   #target;
   #correct;
+  #startTime = 0;
 
   constructor() {
     this.#finished = false;
@@ -19,6 +20,7 @@ class TypingTest {
   }
 
   loadPassage() {
+    this.#startTime = 0;
     this.#target = PASSAGES[0];
     this.input.maxLength = this.#target.length;
     this.passage.innerHTML = "";
@@ -40,6 +42,10 @@ class TypingTest {
     if (this.#finished) return;
     let typed = this.input.value;
     if (typed.length === this.#target.length) this.finish();
+    if (!this.#startTime && typed.length > 0) {
+      this.#startTime = performance.now();
+    }
+    console.log(this.#startTime);
   }
 
   finish() {
