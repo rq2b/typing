@@ -12,11 +12,15 @@ class TypingTest {
 
   constructor() {
     this.test = document.getElementById("test-screen");
+    this.result = document.getElementById("result-screen");
     this.passage = document.getElementById("passage");
     this.input = document.getElementById("input");
     this.wpm = document.getElementById("wpm");
     this.accuracy = document.getElementById("accuracy");
+    this.resultWpm = document.getElementById("result-wpm");
+    this.resultAccuracy = document.getElementById("result-accuracy");
     this.restart = document.getElementById("restart");
+    this.again = document.getElementById("again");
 
     this.input.addEventListener("input", () => this.onInput());
     this.input.addEventListener("keydown", event => {
@@ -29,6 +33,7 @@ class TypingTest {
     });
 
     this.restart.addEventListener("click", () => this.loadPassage());
+    this.again.addEventListener("click", () => this.loadPassage());
 
     this.loadPassage();
   }
@@ -41,6 +46,9 @@ class TypingTest {
     this.#running = false;
     this.#finished = false;
     this.#correct = 0;
+
+    this.test.hidden = false;
+    this.result.hidden = true;
 
     this.passage.innerHTML = "";
     this.input.value = "";
@@ -114,9 +122,17 @@ class TypingTest {
     this.#running = false;
     this.#finished = true;
     clearInterval(this.#timer);
-    this.updateStats();
+
+    const stats = this.updateStats();
+
+    this.resultWpm.textContent = stats.wpm.toFixed(2);
+    this.resultAccuracy.textContent = stats.accuracy + "%";
+
     this.input.disabled = true;
+    this.test.hidden = true;
+    this.result.hidden = false;
   }
 }
 
 const typingTest = new TypingTest();
+
