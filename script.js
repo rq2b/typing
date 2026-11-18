@@ -3,31 +3,32 @@ const PASSAGES = [
 ];
 
 class TypingTest {
-  #finished;
   #target;
+  #startTime;
+  #finished;
   #correct;
-  #startTime = 0;
 
   constructor() {
-    this.#finished = false;
-    this.#correct = 0;
     this.passage = document.getElementById("passage");
     this.input = document.getElementById("input");
-    this.loadPassage();
-    this.input.addEventListener("input", () => this.onInput());
     this.restart = document.getElementById("restart");
+
+    this.input.addEventListener("input", () => this.onInput());
     this.restart.addEventListener("click", () => this.loadPassage());
+
+    this.loadPassage();
   }
 
   loadPassage() {
-    this.#startTime = 0;
     this.#target = PASSAGES[0];
-    this.input.maxLength = this.#target.length;
-    this.passage.innerHTML = "";
-    this.input.value = "";
-    this.input.disabled = false;
+    this.#startTime = 0;
     this.#finished = false;
     this.#correct = 0;
+
+    this.passage.innerHTML = "";
+    this.input.value = "";
+    this.input.maxLength = this.#target.length;
+    this.input.disabled = false;
 
     for (let char of this.#target) {
       const span = document.createElement("span");
@@ -35,17 +36,38 @@ class TypingTest {
       span.textContent = char;
       this.passage.appendChild(span);
     }
-    this.passage.firstChild.classList.add("current");
+
+    this.passage.firstElementChild.classList.add("current");
   }
 
   onInput() {
     if (this.#finished) return;
+
     let typed = this.input.value;
-    if (typed.length === this.#target.length) this.finish();
+
     if (!this.#startTime && typed.length > 0) {
       this.#startTime = performance.now();
     }
-    console.log(this.#startTime);
+
+    this.#correct = 0;
+    const spans = this.passage.children;
+
+    for (let i = 0; i < spans.length; i++) {
+      spans[i].classList.remove("correct", "wrong", "current");
+
+      if (i < typed.length) {
+        if (typed[i] === this.#target[i]) {
+          spans[i].classList.add("correct");
+          this.#correct++;
+        } else {
+          spans[i].classList.add("wrong");
+        }
+      } else if (i === typed.length) {
+        spans[i].classList.add("current");
+      }
+    }
+
+    if (typed.length === this.#target.length) this.finish();
   }
 
   finish() {
