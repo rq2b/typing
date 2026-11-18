@@ -14,11 +14,18 @@ class TypingTest {
     this.input = document.getElementById("input");
     this.loadPassage();
     this.input.addEventListener("input", () => this.onInput());
+    this.restart = document.getElementById("restart");
+    this.restart.addEventListener("click", () => this.loadPassage());
   }
 
   loadPassage() {
     this.#target = PASSAGES[0];
     this.input.maxLength = this.#target.length;
+    this.passage.innerHTML = "";
+    this.input.value = "";
+    this.input.disabled = false;
+    this.#finished = false;
+    this.#correct = 0;
 
     for (let char of this.#target) {
       const span = document.createElement("span");
