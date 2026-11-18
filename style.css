@@ -17,4 +17,45 @@ html, body {
     margin: 0;
 }
 
+body {
+    padding: 32px;
+    min-height: 100vh;
+
+    display: grid;
+    place-items: center;
+
+    background: var(--bg);
+    color: var(--text);
+
+    font-family: "JetBrains Mono", monospace;
+    font-size: 16px;
+}
+
+
+.test {
+    width: 100%;
+}
+
+.stats {
+    display: flex;
+    gap: 44px;
+    margin-bottom: 42px;
+}
+
+.stat {
+    display: grid;
+    gap: 5px;
+}
+
+.label {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.value {
+    color: var(--text);
+    font-size: 30px;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
 
