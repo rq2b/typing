@@ -1,18 +1,23 @@
-const PASSAGES = [
-  "lead want show person real little any how those fact",
-  "might however no if state increase other after thing not",
-  "high by time help many here word very place about",
-  "or as thing see old set around school call right",
-  "program look all many one off become ask increase during",
-  "down not but he too she real order you after",
-  "again system one these which play say school under however",
-  "when leave from find take play small might while keep",
-  "consider out there like interest run show open not could",
-  "do through just see down seem help world little she",
-  "seem ask part against small new ask than develop still",
-  "change through a ask in which down high consider head",
-  "become do real number small large early who end"
-];
+const WORDS_URL = "https://raw.githubusercontent.com/monkeytypegame/monkeytype/refs/heads/master/frontend/static/languages/english_10k.json";
+const WORD_COUNT = 50;
+const PASSAGE_COUNT = 10;
+
+let words = [];
+let passages = [];
+
+function generatePassage() {
+  return Array.from({ length: WORD_COUNT }, () =>
+    words[Math.floor(Math.random() * words.length)]
+  ).join(" ");
+}
+
+async function generatePassages() {
+  const response = await fetch(WORDS_URL);
+  const data = await response.json();
+
+  words = data.words;
+  passages = Array.from({ length: PASSAGE_COUNT }, generatePassage);
+}
 
 class TypingTest {
   #target;
@@ -47,13 +52,20 @@ class TypingTest {
     this.restart.addEventListener("click", () => this.loadPassage());
     this.again.addEventListener("click", () => this.loadPassage());
 
+    this.init();
+  }
+
+  async init() {
+    await generatePassages();
     this.loadPassage();
   }
 
   loadPassage() {
     clearInterval(this.#timer);
 
-    this.#target = PASSAGES[Math.floor(Math.random() * PASSAGES.length)];
+    this.#target = passages.shift();
+    passages.push(generatePassage()); 
+
     this.#startTime = 0;
     this.#running = false;
     this.#finished = false;
